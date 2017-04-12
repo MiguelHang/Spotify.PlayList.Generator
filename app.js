@@ -1,4 +1,4 @@
-'use strict'; 
+'use strict';
 let app = angular.module('appSPG', ['ui.router', 'ui.bootstrap'])
 
 app.constant('settings', {

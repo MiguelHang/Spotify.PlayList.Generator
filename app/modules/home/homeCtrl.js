@@ -1,7 +1,7 @@
 ( () => {
 	app.controller('HomeCtrl', homeCtrl)
 	homeCtrl.$inject = ['$scope', '$state', 'HomeServices', '$q', '$sce']
-		
+
 
 	function homeCtrl($scope, $state, HomeServices, $q, $sce){
 
@@ -9,14 +9,24 @@
 		$scope.artistsId = []
 		$scope.albumsIDs = []
 		$scope.tracksIDs = []
-		$scope.baseUrl = 'https://embed.spotify.com/?theme=white&uri=spotify:trackset:MyPlayList:'
+		$scope.baseUrl = 'https://embed.spotify.com/?theme=white&uri=spotify:trackset:'
+		$scope.playlistName = ''
 		$scope.showPlaylist = false
 		$scope.iframeUrl = {url: ''}
+
 		$scope.search = () => {
+			// clear
+			$scope.artistsId = []
+			$scope.albumsIDs = []
+			$scope.tracksIDs = []
+			//create
 			let artists = $scope.searchParams.split(",")
 			let Ids = artists.map( artistName => HomeServices.getArtist(artistName).then( response => {
+				if(response.artists.items.length == 0){
+					swal('Artista ' + artistName + 'no encontrado', 'error')
+				}
 					$scope.artistsId.push(response.artists.items[0].id)
-			}))	
+			}))
 			return $q.all(Ids).then( response => {
 				$scope.getAlbums()
 			})
@@ -61,11 +71,11 @@
 
 			let song = data.join(',')
 			 $scope.showPlaylist = true
-			 $scope.iframeUrl.url = $scope.baseUrl + song
+			 $scope.iframeUrl.url = $scope.baseUrl + $scope.playlistName + ':' + song
 			 console.log($scope.iframeUrl.url)
 
 		}
-		
+
 		$scope.trustSrc = (src) => {
     		return $sce.trustAsResourceUrl(src);
   		}

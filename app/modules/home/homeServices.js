@@ -4,9 +4,9 @@
 
 	function homeServices($http, settings) {
 		let url = 'https://api.spotify.com/v1/'
-		
+
 		this.getArtist = param => {
-			let urlGetID = url +'search?q='+ param + '&type=artist'	
+			let urlGetID = url +'search?q='+ param + '&type=artist'
 			return $http.get(urlGetID).then( response => {
 				return response.data
 			})
@@ -24,5 +24,5 @@
 			})
 		}
 
-	} 
+	}
 })();
