@@ -13,15 +13,62 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($state
 		templateUrl: 'app/modules/home/home.html',
 		controller:   'HomeCtrl'
 	})
+	.state('home.playlist', {
+		url: 'playlist/',
+		templateUrl: 'app/modules/playlist/playlist.html',
+		controller: 'PlaylistCtrl'
+	})
 	$locationProvider.html5Mode(true)
 }]);
 
 ( () => {
+  app.factory('Playlist', playlist)
+
+  function playlist() {
+
+    let playlists = []
+
+    playlists.setData = (url, name) => {
+      let ObjP = {Url: url, Name: name}
+      playlists.push(ObjP)
+    }
+    playlists.reset = () => {
+      playlists = []
+    }
+
+    return playlists
+  }
+})();
+
+( () => {
+  app.controller('PlaylistCtrl', playlistCtrl)
+  playlistCtrl.$inject = ['$scope', '$state', '$sce', 'Playlist']
+
+  function playlistCtrl ($scope, $state, $sce, Playlist){
+
+    $scope.playlists = Playlist
+		$scope.iframeUrl = {url:''}
+
+    $scope.open = data =>{
+      $scope.iframeUrl.url = data
+    }
+    $scope.reset = () =>{
+      $scope.playlists = []
+      $scope.iframeUrl = {url:''}
+      Playlist.reset()
+    }
+    $scope.trustSrc = (src) => {
+        return $sce.trustAsResourceUrl(src);
+      }
+  }
+})();
+
+( () => {
 	app.controller('HomeCtrl', homeCtrl)
-	homeCtrl.$inject = ['$scope', '$state', 'HomeServices', '$q', '$sce']
+	homeCtrl.$inject = ['$scope', '$state', 'HomeServices', '$q', '$sce', 'Playlist']
 
 
-	function homeCtrl($scope, $state, HomeServices, $q, $sce){
+	function homeCtrl($scope, $state, HomeServices, $q, $sce, Playlist){
 
 		$scope.searchParams = ''
 		$scope.artistsId = []
@@ -41,7 +88,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($state
 			let artists = $scope.searchParams.split(",")
 			let Ids = artists.map( artistName => HomeServices.getArtist(artistName).then( response => {
 				if(response.artists.items.length == 0){
-					swal('Artista ' + artistName + 'no encontrado', 'error')
+					swal('Artista ' + artistName + ' no encontrado', 'error')
 				}
 					$scope.artistsId.push(response.artists.items[0].id)
 			}))
@@ -86,11 +133,14 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($state
 		}
 
 		$scope.createPlayList = data => {
-
 			let song = data.join(',')
 			 $scope.showPlaylist = true
 			 $scope.iframeUrl.url = $scope.baseUrl + $scope.playlistName + ':' + song
-			 console.log($scope.iframeUrl.url)
+			//  console.log($scope.iframeUrl.url)
+			 Playlist.setData($scope.iframeUrl.url, $scope.playlistName)
+			 $scope.searchParams = ''
+			 $scope.playlistName = ''
+			 $state.go('home.playlist')
 
 		}
 

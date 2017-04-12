@@ -1,9 +1,9 @@
 ( () => {
 	app.controller('HomeCtrl', homeCtrl)
-	homeCtrl.$inject = ['$scope', '$state', 'HomeServices', '$q', '$sce']
+	homeCtrl.$inject = ['$scope', '$state', 'HomeServices', '$q', '$sce', 'Playlist']
 
 
-	function homeCtrl($scope, $state, HomeServices, $q, $sce){
+	function homeCtrl($scope, $state, HomeServices, $q, $sce, Playlist){
 
 		$scope.searchParams = ''
 		$scope.artistsId = []
@@ -23,7 +23,7 @@
 			let artists = $scope.searchParams.split(",")
 			let Ids = artists.map( artistName => HomeServices.getArtist(artistName).then( response => {
 				if(response.artists.items.length == 0){
-					swal('Artista ' + artistName + 'no encontrado', 'error')
+					swal('Artista ' + artistName + ' no encontrado', 'error')
 				}
 					$scope.artistsId.push(response.artists.items[0].id)
 			}))
@@ -68,11 +68,14 @@
 		}
 
 		$scope.createPlayList = data => {
-
 			let song = data.join(',')
 			 $scope.showPlaylist = true
 			 $scope.iframeUrl.url = $scope.baseUrl + $scope.playlistName + ':' + song
-			 console.log($scope.iframeUrl.url)
+			//  console.log($scope.iframeUrl.url)
+			 Playlist.setData($scope.iframeUrl.url, $scope.playlistName)
+			 $scope.searchParams = ''
+			 $scope.playlistName = ''
+			 $state.go('home.playlist')
 
 		}
 

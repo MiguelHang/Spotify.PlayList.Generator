@@ -13,5 +13,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($state
 		templateUrl: 'app/modules/home/home.html',
 		controller:   'HomeCtrl'
 	})
+	.state('home.playlist', {
+		url: 'playlist/',
+		templateUrl: 'app/modules/playlist/playlist.html',
+		controller: 'PlaylistCtrl'
+	})
 	$locationProvider.html5Mode(true)
 }]);
