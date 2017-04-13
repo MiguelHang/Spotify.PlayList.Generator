@@ -22,48 +22,6 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($state
 }]);
 
 ( () => {
-  app.factory('Playlist', playlist)
-
-  function playlist() {
-
-    let playlists = []
-
-    playlists.setData = (url, name) => {
-      let ObjP = {Url: url, Name: name}
-      playlists.push(ObjP)
-    }
-    playlists.reset = () => {
-      playlists = []
-    }
-
-    return playlists
-  }
-})();
-
-( () => {
-  app.controller('PlaylistCtrl', playlistCtrl)
-  playlistCtrl.$inject = ['$scope', '$state', '$sce', 'Playlist']
-
-  function playlistCtrl ($scope, $state, $sce, Playlist){
-
-    $scope.playlists = Playlist
-		$scope.iframeUrl = {url:''}
-
-    $scope.open = data =>{
-      $scope.iframeUrl.url = data
-    }
-    $scope.reset = () =>{
-      $scope.playlists = []
-      $scope.iframeUrl = {url:''}
-      Playlist.reset()
-    }
-    $scope.trustSrc = (src) => {
-        return $sce.trustAsResourceUrl(src);
-      }
-  }
-})();
-
-( () => {
 	app.controller('HomeCtrl', homeCtrl)
 	homeCtrl.$inject = ['$scope', '$state', 'HomeServices', '$q', '$sce', 'Playlist']
 
@@ -177,4 +135,49 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', ($state
 		}
 
 	}
+})();
+
+( () => {
+  app.factory('Playlist', playlist)
+
+  function playlist() {
+
+    let playlists = []
+
+    playlists.setData = (url, name) => {
+      let ObjP = {Url: url, Name: name}
+      playlists.push(ObjP)
+    }
+    playlists.reset = () => {
+      playlists.length = 0
+    }
+
+    return playlists
+  }
+})();
+
+( () => {
+  app.controller('PlaylistCtrl', playlistCtrl)
+  playlistCtrl.$inject = ['$scope', '$state', '$sce', 'Playlist']
+
+  function playlistCtrl ($scope, $state, $sce, Playlist){
+
+    $scope.playlists = Playlist
+		$scope.iframeUrl = {url:''}
+    $scope.showClear = true
+    
+    $scope.open = data =>{
+      $scope.iframeUrl.url = data
+    }
+    $scope.reset = () =>{
+      $scope.playlists = []
+      $scope.iframeUrl.url = ''
+      $scope.showClear = false
+      Playlist.reset()
+      $state.go('home')
+    }
+    $scope.trustSrc = (src) => {
+        return $sce.trustAsResourceUrl(src);
+      }
+  }
 })();

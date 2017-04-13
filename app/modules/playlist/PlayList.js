@@ -10,7 +10,7 @@
       playlists.push(ObjP)
     }
     playlists.reset = () => {
-      playlists = []
+      playlists.length = 0
     }
 
     return playlists

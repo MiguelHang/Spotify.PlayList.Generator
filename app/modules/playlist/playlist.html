@@ -1,12 +1,12 @@
-<div class=" row col-md-12 text-center row-fluid" >
+<div class=" row col-md-12 text-center row-fluid">
 			<div class="col-md-3">
 				<ul class="list-group">
 					<a class="list-group-item" ng-repeat="playlist in playlists" ng-click="open(playlist.Url)">{{playlist.Name}}</a>
-					<button type="button" class="btn btn-danger col-md-12" ng-click="reset()">Clear</button>
+					<button type="button" class="btn btn-danger col-md-12" ng-click="reset()" ng-if="showClear">Clear</button>
 
 				</ul>
 			</div>
-			<div class="playlist col-md-9">
+			<div class="playlist col-md-9" >
 				<iframe ng-src="{{trustSrc(iframeUrl.url)}}" ng-model='iframeUrl' height="380" frameborder="0" allowtransparency="true"></iframe>
 			</div>
 </div>
