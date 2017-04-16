@@ -1,1 +1,1 @@
-# Spotify PlayList generator in AngularJs
+# Spotify PlayList generator with AngularJs
