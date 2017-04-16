@@ -1,0 +1,15 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+#bigZone{
+  background-image: url('../img/back.jpg');
+  padding-top: 6vh;
+  margin-top: 0;
+}
+
+#searcher{
+  margin: 0;
+  border-radius: 0px;
+}

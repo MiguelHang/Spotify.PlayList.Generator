@@ -6,7 +6,10 @@
 
 				</ul>
 			</div>
-			<div class="playlist col-md-9" >
+			<div>
+				<img src="../../../img/loading.gif" alt="loading" ng-show="!load">
+			</div>
+			<div class="playlist col-md-9" ng-show="load">
 				<iframe ng-src="{{trustSrc(iframeUrl.url)}}" ng-model='iframeUrl' height="380" frameborder="0" allowtransparency="true"></iframe>
 			</div>
 </div>

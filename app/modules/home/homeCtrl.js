@@ -75,6 +75,7 @@
 			 Playlist.setData($scope.iframeUrl.url, $scope.playlistName)
 			 $scope.searchParams = ''
 			 $scope.playlistName = ''
+			 $scope.$broadcast ('check')
 			 $state.go('home.playlist')
 
 		}

@@ -1,20 +1,27 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" id="searcher">
 	  <div class="container-fluid">
 	    <div class="navbar-header col-md-12">
-	      <a class="navbar-brand" href="#">
-	        <p>PlayList creator</p>
+	      <a class="navbar-brand" href="">
+	        <img src="img\spotifypng.png" alt="spotifyLogo" class="img-responsive" height="150" width="150">
 	      </a>
-	      <form class="navbar" role="search">
-  			<div class="form-group">
+	      <form class="navbar" role="search" name="searcher">
+  			<div class="form-group col-md-8">
+				<br>
     		<input type="text" class="form-control" placeholder="Artist, Artist, ..." ng-model="searchParams" required>
 				<br>
     		<input type="text" class="form-control" placeholder="Playlist name" ng-model="playlistName" required>
-  			</div>
-  			<button type="submit" class="btn btn-default" ng-click="search()">Crear</button>
+				<br>
+				<button type="submit" class="btn btn-default" ng-click="search()" ng-disabled="searcher.$invalid">Create</button>
+				</div>
 		</form>
 	    </div>
 	  </div>
 </nav>
-<div ui-view>
-
+<div ui-view class="col-md-12 text-center" id="bigZone">
+	<div class="col-md-2"></div>
+	<div class="jumbotron text-center col-md-8">
+		<h1>Playlist generator</h1>
+		<h3>Introduce artists names and create your playlists</h3>
+		<img src="img\playlistExample.jpg" alt="playlistCreator">
+	</div>
 </div>
